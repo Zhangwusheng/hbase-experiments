@@ -9,9 +9,7 @@ import org.junit.runner.Result;
  */
 public final class SingleJUnitTestRunner {
 
-    private SingleJUnitTestRunner() {
-
-    }
+    private SingleJUnitTestRunner() {}
 
     public static void main(String... args) throws ClassNotFoundException {
         String[] classAndMethod = args[0].split("@");

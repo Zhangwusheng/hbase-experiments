@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * Created by fenqi on 16/5/11.
@@ -29,8 +30,12 @@ public class HbaseOperator {
     }
 
     protected void init(String zookeeperURI) {
+        init(zookeeperURI, 5000);
+    }
+
+    protected void init(String zookeeperURI, int timeout) {
         try {
-            connection = ConnectionFactory.createConnection(initConfing(zookeeperURI));
+            connection = ConnectionFactory.createConnection(initConfing(zookeeperURI, timeout));
         } catch (IOException e) {
             System.out.println("get exception when create conn");
             e.printStackTrace();
@@ -38,12 +43,12 @@ public class HbaseOperator {
         }
     }
 
-    protected Configuration initConfing(String zookeeperURI) {
+    protected Configuration initConfing(String zookeeperURI, int timeout) {
         Configuration config = HBaseConfiguration.create();
         config.set("hbase.zookeeper.quorum", zookeeperURI);
 
-        config.set("ipc.socket.timeout", "200");
-        config.set("hbase.rpc.timeout", "200");
+        config.set("ipc.socket.timeout", String.valueOf(timeout));
+        config.set("hbase.rpc.timeout", String.valueOf(timeout));
         config.set("hbase.client.retries.number", "1");
 
         return config;
@@ -71,6 +76,18 @@ public class HbaseOperator {
 
     public Connection getConnection() {
         return connection;
+    }
+
+    public static void waitForInput() throws IOException {
+        Scanner reader = new Scanner(System.in);  // Reading from System.in
+        System.out.println("input something: ");
+        System.out.println(reader.next()); // Scans the next token of the input as an int.
+        System.out.println("input anything to exit...");
+        System.in.read();
+    }
+
+    public static void main(String... args) throws IOException {
+        waitForInput();
     }
 
 }

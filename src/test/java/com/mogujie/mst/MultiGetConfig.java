@@ -11,6 +11,45 @@ public class MultiGetConfig {
     private String tableName;
     private String columnFamily;
     private String qualifier;
+    private int timeout;
+
+    public int getWaitTimeSecs() {
+        return waitTimeSecs;
+    }
+
+    public void setWaitTimeSecs(int waitTimeSecs) {
+        this.waitTimeSecs = waitTimeSecs;
+    }
+
+    private int waitTimeSecs;
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
+
+    public boolean isNeedInteract() {
+        return needInteract;
+    }
+
+    public void setNeedInteract(boolean needInteract) {
+        this.needInteract = needInteract;
+    }
+
+    private boolean needInteract;
+
+    public int getSampleNum() {
+        return sampleNum;
+    }
+
+    public void setSampleNum(int sampleNum) {
+        this.sampleNum = sampleNum;
+    }
+
+    private int sampleNum;
 
     public boolean isNeedInsert() {
         return needInsert;

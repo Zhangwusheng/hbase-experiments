@@ -38,7 +38,7 @@ public class MultiGetResponseTimeTest {
         config = new Yaml().loadAs(new FileReader(MultiGetConfigFile), MultiGetConfig.class);
 
         operator = new HbaseOperator();
-        operator.init(config.getZookeeperURI());
+        operator.init(config.getZookeeperURI(), config.getTimeout());
 
         keys = new ArrayList<>();
         File file = new File(config.getKeysFile());
@@ -116,10 +116,22 @@ public class MultiGetResponseTimeTest {
     }
 
     @Test
-    public void ConcurrentGetResponseTime() throws ExecutionException, InterruptedException {
+    public void ConcurrentGetResponseTime() throws ExecutionException, InterruptedException, IOException {
         ExecutorService pool = Executors.newFixedThreadPool(threadNum);
-        List<Future<Result>> futures = new ArrayList<>(count);
 
+        for (int i = 0; i < config.getSampleNum(); i++) {
+            runConcurrentGetOnce(pool);
+            if (config.isNeedInteract()) {
+                log.info("will sleep {} seconds...", config.getWaitTimeSecs());
+                Thread.sleep(config.getWaitTimeSecs() * 1000);
+            }
+        }
+
+        pool.shutdown();
+    }
+
+    private void runConcurrentGetOnce(ExecutorService pool) throws ExecutionException, InterruptedException {
+        List<Future<Result>> futures = new ArrayList<>(count);
         long start = System.currentTimeMillis();
         for (int i = 0; i < count; i++) {
             futures.add(pool.submit(new GetTask(keys.get(i))));
@@ -131,18 +143,26 @@ public class MultiGetResponseTimeTest {
         }
         long end = System.currentTimeMillis(), cost = end - start;
         log.info("concurrent get cost time : {}", cost);
-
-        pool.shutdown();
     }
 
 
     @Test
-    public void MultiGetResponseTime() {
+    public void MultiGetResponseTime() throws IOException, InterruptedException {
         List<Get> gets = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             gets.add(new Get(Bytes.toBytes(keys.get(i))));
         }
 
+        for (int i = 0; i < config.getSampleNum(); i++) {
+            runMultiGetOnce(gets);
+            if (config.isNeedInteract()) {
+                log.info("will sleep {} seconds...", config.getWaitTimeSecs());
+                Thread.sleep(config.getWaitTimeSecs() * 1000);
+            }
+        }
+    }
+
+    private void runMultiGetOnce(List<Get> gets) {
         Table table = null;
 
         try {
@@ -172,5 +192,11 @@ public class MultiGetResponseTimeTest {
             }
         }
     }
+
+//    @Test
+//    public void testInteract() throws IOException {
+//        HbaseOperator.waitForInput();
+//    }
+
 
 }
