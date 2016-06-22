@@ -11,5 +11,6 @@ appender("A1", ConsoleAppender) {
 }
 logger("org.apache.hadoop", ERROR, ["A1"], false)
 logger("org.apache.zookeeper", WARN, ["A1"], false)
+logger("com.mogujie.mst", INFO, ["A1"], false)
 
 root(ERROR, ["A1"])

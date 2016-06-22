@@ -42,8 +42,8 @@ public class HbaseOperator {
         Configuration config = HBaseConfiguration.create();
         config.set("hbase.zookeeper.quorum", zookeeperURI);
 
-        config.set("ipc.socket.timeout", "500");
-        config.set("hbase.rpc.timeout", "1000");
+        config.set("ipc.socket.timeout", "200");
+        config.set("hbase.rpc.timeout", "200");
         config.set("hbase.client.retries.number", "1");
 
         return config;
@@ -72,4 +72,5 @@ public class HbaseOperator {
     public Connection getConnection() {
         return connection;
     }
+
 }
