@@ -24,7 +24,6 @@ public class CustomFilterForRishiTest {
     @BeforeClass
     public static void beforeClass() {
         operator = new HbaseOperator();
-//        operator.init("10.13.42.19");
         operator.init("localhost");
     }
 

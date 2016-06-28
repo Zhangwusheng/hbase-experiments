@@ -1,10 +1,7 @@
 package com.mogujie.mst;
 
 import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.hbase.client.Get;
-import org.apache.hadoop.hbase.client.Put;
-import org.apache.hadoop.hbase.client.Result;
-import org.apache.hadoop.hbase.client.Table;
+import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -192,11 +189,5 @@ public class MultiGetResponseTimeTest {
             }
         }
     }
-
-//    @Test
-//    public void testInteract() throws IOException {
-//        HbaseOperator.waitForInput();
-//    }
-
 
 }
