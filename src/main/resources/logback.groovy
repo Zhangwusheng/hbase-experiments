@@ -6,7 +6,7 @@ import static ch.qos.logback.classic.Level.WARN
 
 appender("A1", ConsoleAppender) {
     encoder(PatternLayoutEncoder) {
-        pattern = "%d{yyyy/MM/dd-HH:mm:ss} %-5level [%thread] %class:%line >> %msg%n"
+        pattern = "%d{yyyy/MM/dd-HH:mm:ss} %-5level [%thread] %class:%line:%M >> %msg%n"
     }
 }
 logger("org.apache.hadoop", ERROR, ["A1"], false)

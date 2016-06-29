@@ -60,7 +60,7 @@ public class MultiGetResponseTimeTest {
             try {
                 table = operator.getConnection().getTable(TableName.valueOf(tableName));
             } catch (IOException e) {
-                Assert.fail(e.getMessage());
+                Assert.fail(e.toString());
             }
 
             for (int i = 0; i < count; i++) {
@@ -71,7 +71,7 @@ public class MultiGetResponseTimeTest {
                 try {
                     table.put(put);
                 } catch (IOException e) {
-                    Assert.fail(e.getMessage());
+                    Assert.fail(e.toString());
                 }
             }
         }
@@ -97,7 +97,7 @@ public class MultiGetResponseTimeTest {
             try {
                 table = operator.getConnection().getTable(TableName.valueOf(tableName));
             } catch (IOException e) {
-                Assert.fail(e.getMessage());
+                Assert.fail(e.toString());
             }
 
             long start = System.currentTimeMillis();
@@ -166,7 +166,7 @@ public class MultiGetResponseTimeTest {
         try {
             table = operator.getConnection().getTable(TableName.valueOf(tableName));
         } catch (IOException e) {
-            Assert.fail(e.getMessage());
+            Assert.fail(e.toString());
         }
 
         long start = System.currentTimeMillis();
@@ -176,7 +176,7 @@ public class MultiGetResponseTimeTest {
                 log.debug(result.toString());
             }
         } catch (IOException e) {
-            Assert.fail(e.getMessage());
+            Assert.fail(e.toString());
         }
 
         long end = System.currentTimeMillis(), cost = end - start;
@@ -186,7 +186,7 @@ public class MultiGetResponseTimeTest {
             try {
                 table.close();
             } catch (IOException e) {
-                Assert.fail(e.getMessage());
+                Assert.fail(e.toString());
             }
         }
     }

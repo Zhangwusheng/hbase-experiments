@@ -1,6 +1,8 @@
 package com.mogujie.mst.hbase.filter;
 
 import com.mogujie.mst.HbaseOperator;
+import org.apache.hadoop.hbase.HColumnDescriptor;
+import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.filter.Filter;
@@ -8,7 +10,6 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 
 /**
@@ -22,12 +23,13 @@ public class FilterTestBase {
             columnFamily = "cf",
             qualifier = "q";
 
-    protected static String keyPrefix = "row", valuePrefix = "v";
+    protected static String keyPrefix = "key", valuePrefix = "value";
     private static Table table = null;
     private static int count = 15;
     private static String zookeeperURI = "localhost";
+    private static boolean truncateTable = true, dropTable = false;
 
-    private static StringGenerator keyGenerator, valueGenerator;
+    protected static StringGenerator keyGenerator, valueGenerator;
 
     static class DefaultStringGenerator implements StringGenerator {
         @Override
@@ -36,19 +38,54 @@ public class FilterTestBase {
         }
     }
 
-    static {
-        keyGenerator = valueGenerator = new DefaultStringGenerator();
-    }
-
     @BeforeClass
     public static void beforeClass() {
+
+        if (null == keyGenerator) {
+            log.info("init keyGenerator by default...");
+            keyGenerator = new DefaultStringGenerator();
+        }
+
+        if (null == valueGenerator) {
+            log.info("init valueGenerator by default...");
+            valueGenerator = new DefaultStringGenerator();
+        }
+
         operator = new HbaseOperator();
         operator.init(zookeeperURI);
+
+        // clean data
+        try {
+            Admin admin = operator.getConnection().getAdmin();
+            TableName table = TableName.valueOf(tableName);
+
+            boolean tableExist = admin.tableExists(table);
+            if (tableExist) {
+                if (truncateTable) {
+                    log.info("table {} exist, truncate...", tableName);
+                    admin.disableTable(table);
+                    if (admin.isTableDisabled(table)) {
+                        admin.truncateTable(table, true);
+                    }
+                }
+            } else {
+                log.info("table {} not exist, create...", tableName);
+
+                HColumnDescriptor family = new HColumnDescriptor(columnFamily);
+
+                HTableDescriptor hTableDescriptor = new HTableDescriptor(table);
+                hTableDescriptor.addFamily(family);
+
+                admin.createTable(hTableDescriptor);
+            }
+        } catch (IOException e) {
+            Assert.fail(e.toString());
+        }
 
         try {
             table = operator.getConnection().getTable(TableName.valueOf(tableName));
         } catch (IOException e) {
-            Assert.fail(e.getMessage());
+            Assert.fail(e.toString());
         }
 
         // warm-up
@@ -61,7 +98,7 @@ public class FilterTestBase {
             try {
                 table.put(put);
             } catch (IOException e) {
-                Assert.fail(e.getMessage());
+                Assert.fail(e.toString());
             }
         }
 
@@ -69,7 +106,7 @@ public class FilterTestBase {
             try {
                 table.close();
             } catch (IOException e) {
-                Assert.fail(e.getMessage());
+                Assert.fail(e.toString());
             }
         }
 
@@ -77,27 +114,43 @@ public class FilterTestBase {
 
     @AfterClass
     public static void afterClass() {
-        if (null != operator) {
-            operator.close();
+        log.info("{}");
+        try {
+            if (null != operator) {
+                if (dropTable) {
+                    log.info("drop table {}...", tableName);
+                    Admin admin = operator.getConnection().getAdmin();
+                    TableName table = TableName.valueOf(tableName);
+                    admin.disableTable(table);
+                    if (admin.isTableDisabled(table)) {
+                        admin.deleteTable(table);
+                    }
+                }
+                operator.close();
+            }
+        } catch (IOException e) {
+            Assert.fail(e.toString());
         }
     }
 
     @Before
     public void before() {
+        log.info("{}");
         try {
             table = operator.getConnection().getTable(TableName.valueOf(tableName));
         } catch (IOException e) {
-            Assert.fail(e.getMessage());
+            Assert.fail(e.toString());
         }
     }
 
     @After
     public void after() {
+        log.info("{}");
         if (null != table) {
             try {
                 table.close();
             } catch (IOException e) {
-                Assert.fail(e.getMessage());
+                Assert.fail(e.toString());
             }
         }
     }
@@ -116,7 +169,7 @@ public class FilterTestBase {
             scanner.close();
             Assert.assertEquals(expectValue, resultNum);
         } catch (IOException e) {
-            Assert.fail(e.getMessage());
+            Assert.fail(e.toString());
         }
     }
 

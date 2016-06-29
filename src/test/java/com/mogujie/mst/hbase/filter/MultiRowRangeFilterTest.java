@@ -4,6 +4,7 @@ import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.MultiRowRangeFilter;
 import org.apache.hadoop.hbase.filter.MultiRowRangeFilter.RowRange;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,13 @@ import java.util.List;
 public class MultiRowRangeFilterTest extends FilterTestBase {
     private static final Logger log = LoggerFactory.getLogger(MultiRowRangeFilterTest.class);
 
+    @BeforeClass
+    public static void beforeClass() {
+        log.info("change keyGenerator ...");
+        keyGenerator = (seeds) -> seeds[0];
+        FilterTestBase.beforeClass();
+    }
+
     @Test
     public void MultiRowRangeFilterTest() {
         try {
@@ -30,7 +38,7 @@ public class MultiRowRangeFilterTest extends FilterTestBase {
             Filter multiRowRangeFilter = new MultiRowRangeFilter(rowRangeList);
             scanAndCheck(multiRowRangeFilter, 9);
         } catch (IOException e) {
-            Assert.fail(e.getMessage());
+            Assert.fail(e.toString());
         }
     }
 
