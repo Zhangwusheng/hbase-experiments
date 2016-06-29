@@ -22,7 +22,7 @@ import static com.mogujie.mst.util.HbaseTestUtil.generateUUID;
  */
 public class CustomFilterForRishiTest extends FilterTestBase {
     private static final Logger log = LoggerFactory.getLogger(CustomFilterForRishiTest.class);
-    static private char seperator = '-';
+    private static char seperator = '-';
 
     @BeforeClass
     public static void beforeClass() {

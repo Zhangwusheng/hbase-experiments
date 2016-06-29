@@ -19,36 +19,28 @@ public class FilterTestBase {
     private static final Logger log = LoggerFactory.getLogger(FilterTestBase.class);
 
     private static HbaseOperator operator = null;
+    private static Table table = null;
+
     protected static String tableName = "t1",
             columnFamily = "cf",
             qualifier = "q";
-
     protected static String keyPrefix = "key", valuePrefix = "value";
-    private static Table table = null;
-    private static int count = 15;
-    private static String zookeeperURI = "localhost";
-    private static boolean truncateTable = true, dropTable = false;
-
+    protected static int count = 15;
+    protected static String zookeeperURI = "localhost";
+    protected static boolean truncateTable = true, dropTable = false;
     protected static StringGenerator keyGenerator, valueGenerator;
-
-    static class DefaultStringGenerator implements StringGenerator {
-        @Override
-        public String get(String... seeds) {
-            return seeds[2] + seeds[1] + seeds[0];
-        }
-    }
 
     @BeforeClass
     public static void beforeClass() {
 
         if (null == keyGenerator) {
             log.info("init keyGenerator by default...");
-            keyGenerator = new DefaultStringGenerator();
+            keyGenerator = (seeds) -> seeds[2] + seeds[1] + seeds[0];
         }
 
         if (null == valueGenerator) {
             log.info("init valueGenerator by default...");
-            valueGenerator = new DefaultStringGenerator();
+            valueGenerator = (seeds) -> seeds[2] + seeds[1] + seeds[0];
         }
 
         operator = new HbaseOperator();
