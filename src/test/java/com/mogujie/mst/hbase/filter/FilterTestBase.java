@@ -1,33 +1,49 @@
-package com.mogujie.mst;
+package com.mogujie.mst.hbase.filter;
 
-import com.mogujie.mst.filters.CustomFilterForRishi;
+import com.mogujie.mst.HbaseOperator;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
-import org.apache.hadoop.hbase.filter.*;
+import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.UUID;
 
 /**
- * Created by fenqi on 16/6/18.
+ * Created by fenqi on 16/6/30.
  */
-public class RowFilterTest {
-    private static final Logger log = LoggerFactory.getLogger(RowFilterTest.class);
+public class FilterTestBase {
+    private static final Logger log = LoggerFactory.getLogger(FilterTestBase.class);
+
     private static HbaseOperator operator = null;
-    private static String tableName = "t1",
+    protected static String tableName = "t1",
             columnFamily = "cf",
-            qualifier = "q",
-            keyPrefix = "row";
+            qualifier = "q";
+
+    protected static String keyPrefix = "row", valuePrefix = "v";
     private static Table table = null;
+    private static int count = 15;
+    private static String zookeeperURI = "localhost";
+
+    private static StringGenerator keyGenerator, valueGenerator;
+
+    static class DefaultStringGenerator implements StringGenerator {
+        @Override
+        public String get(String... seeds) {
+            return seeds[2] + seeds[1] + seeds[0];
+        }
+    }
+
+    static {
+        keyGenerator = valueGenerator = new DefaultStringGenerator();
+    }
 
     @BeforeClass
     public static void beforeClass() {
         operator = new HbaseOperator();
-        operator.init("localhost");
+        operator.init(zookeeperURI);
 
         try {
             table = operator.getConnection().getTable(TableName.valueOf(tableName));
@@ -36,10 +52,10 @@ public class RowFilterTest {
         }
 
         // warm-up
-        int count = 15;
         for (int i = 0; i < count; i++) {
-            String rowKey = keyPrefix + i,
-                    value = "v" + i;
+            String rowKey = keyGenerator.get(String.valueOf(i), "", keyPrefix),
+                    value = valueGenerator.get(String.valueOf(i), "", valuePrefix);
+
             Put put = new Put(Bytes.toBytes(rowKey));
             put.addColumn(Bytes.toBytes(columnFamily), Bytes.toBytes(qualifier), Bytes.toBytes(value));
             try {
@@ -84,24 +100,6 @@ public class RowFilterTest {
                 Assert.fail(e.getMessage());
             }
         }
-    }
-
-    @Test
-    public void testBinaryComparator() {
-        RowFilter rowFilter = new RowFilter(CompareFilter.CompareOp.EQUAL, new BinaryComparator(Bytes.toBytes(keyPrefix + "4")));
-        scanAndCheck(rowFilter, 1);
-    }
-
-    @Test
-    public void testBinaryPrefixComparator() {
-        RowFilter rowFilter = new RowFilter(CompareFilter.CompareOp.EQUAL, new BinaryPrefixComparator(Bytes.toBytes(keyPrefix + "1")));
-        scanAndCheck(rowFilter, 6);
-    }
-
-    @Test
-    public void testSubstringComparator() {
-        RowFilter rowFilter = new RowFilter(CompareFilter.CompareOp.EQUAL, new SubstringComparator(keyPrefix + "15"));
-        scanAndCheck(rowFilter, 0);
     }
 
     public void scanAndCheck(Filter filter, int expectValue) {

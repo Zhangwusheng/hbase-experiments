@@ -1,4 +1,4 @@
-package com.mogujie.mst;
+package com.mogujie.mst.hbase.api;
 
 /**
  * Created by fenqi on 16/6/21.

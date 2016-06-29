@@ -19,7 +19,7 @@ public class HbaseOperator {
     /** Connection to the cluster. A single connection shared by all application threads. */
     private Connection connection = null;
 
-    protected void close() {
+    public void close() {
         try {
             if (connection != null) {
                 connection.close();
@@ -29,11 +29,11 @@ public class HbaseOperator {
         }
     }
 
-    protected void init(String zookeeperURI) {
+    public void init(String zookeeperURI) {
         init(zookeeperURI, 5000);
     }
 
-    protected void init(String zookeeperURI, int timeout) {
+    public void init(String zookeeperURI, int timeout) {
         try {
             connection = ConnectionFactory.createConnection(initConfing(zookeeperURI, timeout));
         } catch (IOException e) {
