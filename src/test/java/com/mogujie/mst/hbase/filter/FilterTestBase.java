@@ -1,6 +1,8 @@
 package com.mogujie.mst.hbase.filter;
 
 import com.mogujie.mst.HbaseOperator;
+import com.mogujie.mst.util.StringGenerator;
+import com.mogujie.mst.util.StringListGenerator;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableName;
@@ -10,7 +12,9 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by fenqi on 16/6/30.
@@ -29,6 +33,7 @@ public class FilterTestBase {
     protected static String zookeeperURI = "localhost";
     protected static boolean truncateTable = true, dropTable = false;
     protected static StringGenerator keyGenerator, valueGenerator;
+    protected static StringListGenerator qualifierGenerator;
 
     @BeforeClass
     public static void beforeClass() {
@@ -41,6 +46,11 @@ public class FilterTestBase {
         if (null == valueGenerator) {
             log.info("init valueGenerator by default...");
             valueGenerator = (seeds) -> seeds[2] + seeds[1] + seeds[0];
+        }
+
+        if (null == qualifierGenerator) {
+            log.info("init qualifierGenerator by default...");
+            qualifierGenerator = (seeds) -> seeds;
         }
 
         operator = new HbaseOperator();
@@ -86,7 +96,11 @@ public class FilterTestBase {
                     value = valueGenerator.get(String.valueOf(i), "", valuePrefix);
 
             Put put = new Put(Bytes.toBytes(rowKey));
-            put.addColumn(Bytes.toBytes(columnFamily), Bytes.toBytes(qualifier), Bytes.toBytes(value));
+            String[] qualifiers = qualifierGenerator.get(qualifier);
+            for (int j = 0; j < qualifiers.length; j++) {
+                put.addColumn(Bytes.toBytes(columnFamily), Bytes.toBytes(qualifiers[j]), Bytes.toBytes(value));
+            }
+
             try {
                 table.put(put);
             } catch (IOException e) {
@@ -147,22 +161,47 @@ public class FilterTestBase {
         }
     }
 
-    public void scanAndCheck(Filter filter, int expectValue) {
+    public void scanAndCheck(Filter filter, int expectRowNum,
+                             String startKey, String endKey,
+                             int expectCellNum, String columnFamily) {
         Scan scan = new Scan();
         scan.setFilter(filter);
+
+        if (null != startKey) {
+            scan.setStartRow(Bytes.toBytes(startKey));
+        }
+
+        if (null != endKey) {
+            scan.setStopRow(Bytes.toBytes(endKey));
+        }
+
+        if (null != columnFamily) {
+            scan.addFamily(Bytes.toBytes(columnFamily));
+        }
 
         ResultScanner scanner;
         try {
             scanner = table.getScanner(scan);
-            int resultNum = 0;
-            for (Result result = scanner.next(); result != null; resultNum++, result = scanner.next()) {
+            int rowNum = 0;
+            for (Result result = scanner.next(); result != null; rowNum++, result = scanner.next()) {
                 log.info(new String(result.getRow()));
+                if (0 < expectCellNum) {
+                    log.info(result.listCells().toString());
+                    Assert.assertEquals(expectCellNum, result.listCells().size());
+                }
             }
             scanner.close();
-            Assert.assertEquals(expectValue, resultNum);
+            Assert.assertEquals(expectRowNum, rowNum);
         } catch (IOException e) {
             Assert.fail(e.toString());
         }
+    }
+
+    public void scanAndCheck(Filter filter, int expectValue) {
+        scanAndCheck(filter, expectValue,
+                null, null,
+                -1, null);
+
     }
 
 }

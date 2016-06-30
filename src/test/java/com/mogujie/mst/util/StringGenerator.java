@@ -1,4 +1,4 @@
-package com.mogujie.mst.hbase.filter;
+package com.mogujie.mst.util;
 
 /**
  * Created by fenqi on 16/6/30.
