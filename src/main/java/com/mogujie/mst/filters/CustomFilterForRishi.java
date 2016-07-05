@@ -19,7 +19,7 @@ import java.io.IOException;
  * Created by fenqi on 16/6/19.
  */
 public class CustomFilterForRishi extends SingleColumnValueFilter {
-    private static final Log LOG = LogFactory.getLog(CustomFilterForRishi.class);
+    private static final Log log = LogFactory.getLog(CustomFilterForRishi.class);
     private static final String SEPARATOR = "#";
     private char splitChar;
     private long startTimestamp;

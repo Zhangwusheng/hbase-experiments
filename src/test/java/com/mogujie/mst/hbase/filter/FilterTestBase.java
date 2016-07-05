@@ -23,7 +23,7 @@ public class FilterTestBase {
     private static final Logger log = LoggerFactory.getLogger(FilterTestBase.class);
 
     private static HbaseOperator operator = null;
-    private static Table table = null;
+    protected static Table table = null;
 
     protected static String tableName = "t1",
             columnFamily = "cf",
