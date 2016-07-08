@@ -1,4 +1,4 @@
-package com.mogujie.mst.hbase.filter;
+package com.mogujie.mst.hbase.filters;
 
 import org.apache.hadoop.hbase.filter.*;
 import org.apache.hadoop.hbase.filter.MultiRowRangeFilter.RowRange;

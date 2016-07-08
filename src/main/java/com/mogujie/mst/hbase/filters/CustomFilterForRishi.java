@@ -1,4 +1,4 @@
-package com.mogujie.mst.filters;
+package com.mogujie.mst.hbase.filters;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.apache.commons.logging.Log;

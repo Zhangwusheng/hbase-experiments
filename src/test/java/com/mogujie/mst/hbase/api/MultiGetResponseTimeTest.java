@@ -1,6 +1,6 @@
 package com.mogujie.mst.hbase.api;
 
-import com.mogujie.mst.HbaseOperator;
+import com.mogujie.mst.hbase.HbaseOperator;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;

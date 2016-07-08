@@ -1,19 +1,10 @@
-package com.mogujie.mst.hbase.filter;
+package com.mogujie.mst.hbase.filters;
 
-import com.mogujie.mst.HbaseOperator;
-import com.mogujie.mst.filters.CustomFilterForRishi;
-import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.UUID;
 
 import static com.mogujie.mst.util.HbaseTestUtil.generateUUID;
 

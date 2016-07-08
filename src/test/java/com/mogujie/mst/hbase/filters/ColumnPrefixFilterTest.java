@@ -1,6 +1,5 @@
-package com.mogujie.mst.hbase.filter;
+package com.mogujie.mst.hbase.filters;
 
-import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.filter.*;
 import org.apache.hadoop.hbase.util.Bytes;
@@ -9,8 +8,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
 
 /**
  * Created by fenqi on 16/6/18.

@@ -1,6 +1,5 @@
-package com.mogujie.mst.hbase.filter;
+package com.mogujie.mst.hbase.filters;
 
-import com.mogujie.mst.filters.GetLatestColumnsFilter;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.Put;

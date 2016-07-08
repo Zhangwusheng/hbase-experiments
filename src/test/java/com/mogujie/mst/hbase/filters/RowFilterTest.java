@@ -1,15 +1,10 @@
-package com.mogujie.mst.hbase.filter;
+package com.mogujie.mst.hbase.filters;
 
-import com.mogujie.mst.HbaseOperator;
-import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.filter.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 
 /**
  * Created by fenqi on 16/6/18.

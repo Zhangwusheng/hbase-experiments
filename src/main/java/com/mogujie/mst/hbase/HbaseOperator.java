@@ -1,6 +1,6 @@
-package com.mogujie.mst;
+package com.mogujie.mst.hbase;
 
-import com.mogujie.mst.commands.HbaseCommand;
+import com.mogujie.mst.hbase.commands.HbaseCommand;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.*;

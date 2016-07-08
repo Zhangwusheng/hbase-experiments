@@ -1,6 +1,6 @@
-package com.mogujie.mst.hbase.filter;
+package com.mogujie.mst.hbase.filters;
 
-import com.mogujie.mst.HbaseOperator;
+import com.mogujie.mst.hbase.HbaseOperator;
 import com.mogujie.mst.util.StringGenerator;
 import com.mogujie.mst.util.StringListGenerator;
 import org.apache.hadoop.hbase.HColumnDescriptor;
@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by fenqi on 16/6/30.

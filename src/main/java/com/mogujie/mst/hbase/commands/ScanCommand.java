@@ -1,4 +1,4 @@
-package com.mogujie.mst.commands;
+package com.mogujie.mst.hbase.commands;
 
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
