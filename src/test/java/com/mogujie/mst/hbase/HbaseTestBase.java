@@ -1,6 +1,5 @@
-package com.mogujie.mst.hbase.filters;
+package com.mogujie.mst.hbase;
 
-import com.mogujie.mst.hbase.HbaseOperator;
 import com.mogujie.mst.util.StringGenerator;
 import com.mogujie.mst.util.StringListGenerator;
 import org.apache.hadoop.hbase.HColumnDescriptor;
@@ -18,10 +17,10 @@ import java.io.IOException;
 /**
  * Created by fenqi on 16/6/30.
  */
-public class FilterTestBase {
-    private static final Logger log = LoggerFactory.getLogger(FilterTestBase.class);
+public class HbaseTestBase {
+    private static final Logger log = LoggerFactory.getLogger(HbaseTestBase.class);
 
-    private static HbaseOperator operator = null;
+    protected static HbaseOperator operator = null;
     protected static Table table = null;
 
     protected static String tableName = "t1",
@@ -57,28 +56,7 @@ public class FilterTestBase {
 
         // clean data
         try {
-            Admin admin = operator.getConnection().getAdmin();
-            TableName table = TableName.valueOf(tableName);
-
-            boolean tableExist = admin.tableExists(table);
-            if (tableExist) {
-                if (truncateTable) {
-                    log.info("table {} exist, truncate...", tableName);
-                    admin.disableTable(table);
-                    if (admin.isTableDisabled(table)) {
-                        admin.truncateTable(table, true);
-                    }
-                }
-            } else {
-                log.info("table {} not exist, create...", tableName);
-
-                HColumnDescriptor family = new HColumnDescriptor(columnFamily);
-
-                HTableDescriptor hTableDescriptor = new HTableDescriptor(table);
-                hTableDescriptor.addFamily(family);
-
-                admin.createTable(hTableDescriptor);
-            }
+            createTable(tableName, columnFamily, truncateTable);
         } catch (IOException e) {
             Assert.fail(e.toString());
         }
@@ -117,24 +95,53 @@ public class FilterTestBase {
 
     }
 
+    public static void createTable(String strTableName, String strColumnFamily, boolean ifTruncateTable) throws IOException {
+        Admin admin = operator.getConnection().getAdmin();
+        TableName table = TableName.valueOf(strTableName);
+
+        boolean tableExist = admin.tableExists(table);
+        if (tableExist) {
+            if (ifTruncateTable) {
+                log.info("table {} exist, truncate...", strTableName);
+                admin.disableTable(table);
+                if (admin.isTableDisabled(table)) {
+                    admin.truncateTable(table, true);
+                }
+            }
+        } else {
+            log.info("table {} not exist, create...", strTableName);
+
+            HColumnDescriptor family = new HColumnDescriptor(strColumnFamily);
+
+            HTableDescriptor hTableDescriptor = new HTableDescriptor(table);
+            hTableDescriptor.addFamily(family);
+
+            admin.createTable(hTableDescriptor);
+        }
+    }
+
     @AfterClass
     public static void afterClass() {
         log.info("{}");
         try {
             if (null != operator) {
-                if (dropTable) {
-                    log.info("drop table {}...", tableName);
-                    Admin admin = operator.getConnection().getAdmin();
-                    TableName table = TableName.valueOf(tableName);
-                    admin.disableTable(table);
-                    if (admin.isTableDisabled(table)) {
-                        admin.deleteTable(table);
-                    }
-                }
+                dropTable(tableName, dropTable);
                 operator.close();
             }
         } catch (IOException e) {
             Assert.fail(e.toString());
+        }
+    }
+
+    public static void dropTable(String strTableName, boolean ifDropTable) throws IOException {
+        if (ifDropTable) {
+            log.info("drop table {}...", strTableName);
+            Admin admin = operator.getConnection().getAdmin();
+            TableName table = TableName.valueOf(strTableName);
+            admin.disableTable(table);
+            if (admin.isTableDisabled(table)) {
+                admin.deleteTable(table);
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package com.mogujie.mst.hbase.filters;
 
+import com.mogujie.mst.hbase.HbaseTestBase;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.filter.*;
 import org.apache.hadoop.hbase.util.Bytes;
@@ -12,8 +13,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by fenqi on 16/6/18.
  */
-public class ColumnPrefixFilterTest extends FilterTestBase {
-    private static final Logger log = LoggerFactory.getLogger(ColumnPrefixFilterTest.class);
+public class ColumnPrefixHbaseTest extends HbaseTestBase {
+    private static final Logger log = LoggerFactory.getLogger(ColumnPrefixHbaseTest.class);
     private static String[] qualifiers = {"a.b.c", "a.b.d", "a.e"};
 
     @BeforeClass
@@ -21,7 +22,7 @@ public class ColumnPrefixFilterTest extends FilterTestBase {
         log.info("change qualifierGenerator ...");
         qualifierGenerator = (seeds) -> qualifiers;
         dropTable = false;
-        FilterTestBase.beforeClass();
+        HbaseTestBase.beforeClass();
     }
 
     @Test

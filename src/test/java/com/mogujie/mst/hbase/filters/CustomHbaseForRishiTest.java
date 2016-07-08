@@ -1,5 +1,6 @@
 package com.mogujie.mst.hbase.filters;
 
+import com.mogujie.mst.hbase.HbaseTestBase;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -11,15 +12,15 @@ import static com.mogujie.mst.util.HbaseTestUtil.generateUUID;
 /**
  * Created by fenqi on 16/6/18.
  */
-public class CustomFilterForRishiTest extends FilterTestBase {
-    private static final Logger log = LoggerFactory.getLogger(CustomFilterForRishiTest.class);
+public class CustomHbaseForRishiTest extends HbaseTestBase {
+    private static final Logger log = LoggerFactory.getLogger(CustomHbaseForRishiTest.class);
     private static char seperator = '-';
 
     @BeforeClass
     public static void beforeClass() {
         log.info("change valueGenerator ...");
         valueGenerator = (seeds) -> generateUUID(8) + seperator + seeds[0];
-        FilterTestBase.beforeClass();
+        HbaseTestBase.beforeClass();
     }
 
     @Test

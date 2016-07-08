@@ -19,6 +19,12 @@ public class HbaseOperator {
     /** Connection to the cluster. A single connection shared by all application threads. */
     private Connection connection = null;
 
+    public Configuration getConfig() {
+        return config;
+    }
+
+    private Configuration config = null;
+
     public void close() {
         try {
             if (connection != null) {
@@ -35,7 +41,8 @@ public class HbaseOperator {
 
     public void init(String zookeeperURI, int timeout) {
         try {
-            connection = ConnectionFactory.createConnection(initConfing(zookeeperURI, timeout));
+            initConfing(zookeeperURI, timeout);
+            connection = ConnectionFactory.createConnection(config);
         } catch (IOException e) {
             System.out.println("get exception when create conn");
             e.printStackTrace();
@@ -43,15 +50,13 @@ public class HbaseOperator {
         }
     }
 
-    protected Configuration initConfing(String zookeeperURI, int timeout) {
-        Configuration config = HBaseConfiguration.create();
+    protected void initConfing(String zookeeperURI, int timeout) {
+        config = HBaseConfiguration.create();
         config.set("hbase.zookeeper.quorum", zookeeperURI);
 
         config.set("ipc.socket.timeout", String.valueOf(timeout));
         config.set("hbase.rpc.timeout", String.valueOf(timeout));
         config.set("hbase.client.retries.number", "1");
-
-        return config;
     }
 
     protected void execute(String tableName, HbaseCommand command) {

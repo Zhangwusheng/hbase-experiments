@@ -1,5 +1,6 @@
 package com.mogujie.mst.hbase.filters;
 
+import com.mogujie.mst.hbase.HbaseTestBase;
 import org.apache.hadoop.hbase.filter.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.*;
@@ -9,8 +10,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by fenqi on 16/6/18.
  */
-public class RowFilterTest extends FilterTestBase {
-    private static final Logger log = LoggerFactory.getLogger(RowFilterTest.class);
+public class RowHbaseTest extends HbaseTestBase {
+    private static final Logger log = LoggerFactory.getLogger(RowHbaseTest.class);
 
     @Test
     public void testBinaryComparator() {

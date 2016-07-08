@@ -1,5 +1,6 @@
 package com.mogujie.mst.hbase.filters;
 
+import com.mogujie.mst.hbase.HbaseTestBase;
 import org.apache.hadoop.hbase.filter.*;
 import org.apache.hadoop.hbase.filter.MultiRowRangeFilter.RowRange;
 import org.junit.Assert;
@@ -18,8 +19,8 @@ import static com.mogujie.mst.util.HbaseTestUtil.getStrOfRepeatedChar;
 /**
  * Created by fenqi on 16/6/18.
  */
-public class MultiRowRangeFilterTest extends FilterTestBase {
-    private static final Logger log = LoggerFactory.getLogger(MultiRowRangeFilterTest.class);
+public class MultiRowRangeHbaseTest extends HbaseTestBase {
+    private static final Logger log = LoggerFactory.getLogger(MultiRowRangeHbaseTest.class);
     private static char seperator = '-', repeatedTimes = 10;
     private static long wantedId = 1;
 
@@ -33,7 +34,7 @@ public class MultiRowRangeFilterTest extends FilterTestBase {
         dropTable = true;
 
         for (int i = 0; i < repeatedTimes; i++) {
-            FilterTestBase.beforeClass();
+            HbaseTestBase.beforeClass();
         }
     }
 
