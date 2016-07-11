@@ -32,6 +32,7 @@ public class HbaseTestBase {
     protected static boolean truncateTable = true, dropTable = false;
     protected static StringGenerator keyGenerator, valueGenerator;
     protected static StringListGenerator qualifierGenerator;
+    protected static int maxVersions = 1;
 
     @BeforeClass
     public static void beforeClass() {
@@ -97,27 +98,32 @@ public class HbaseTestBase {
 
     public static void createTable(String strTableName, String strColumnFamily, boolean ifTruncateTable) throws IOException {
         Admin admin = operator.getConnection().getAdmin();
-        TableName table = TableName.valueOf(strTableName);
+        TableName tableNameToCreate = TableName.valueOf(strTableName);
 
-        boolean tableExist = admin.tableExists(table);
+        boolean tableExist = admin.tableExists(tableNameToCreate);
         if (tableExist) {
             if (ifTruncateTable) {
-                log.info("table {} exist, truncate...", strTableName);
-                admin.disableTable(table);
-                if (admin.isTableDisabled(table)) {
-                    admin.truncateTable(table, true);
+                log.info("table {} exist, drop and create...", strTableName);
+                admin.disableTable(tableNameToCreate);
+                if (admin.isTableDisabled(tableNameToCreate)) {
+//                    admin.truncateTable(table, true);
+                    admin.deleteTable(tableNameToCreate);
                 }
+
+            } else {
+                return;
             }
         } else {
             log.info("table {} not exist, create...", strTableName);
-
-            HColumnDescriptor family = new HColumnDescriptor(strColumnFamily);
-
-            HTableDescriptor hTableDescriptor = new HTableDescriptor(table);
-            hTableDescriptor.addFamily(family);
-
-            admin.createTable(hTableDescriptor);
         }
+
+        HColumnDescriptor family = new HColumnDescriptor(strColumnFamily);
+        family.setMaxVersions(maxVersions);
+
+        HTableDescriptor hTableDescriptor = new HTableDescriptor(tableNameToCreate);
+        hTableDescriptor.addFamily(family);
+
+        admin.createTable(hTableDescriptor);
     }
 
     @AfterClass
