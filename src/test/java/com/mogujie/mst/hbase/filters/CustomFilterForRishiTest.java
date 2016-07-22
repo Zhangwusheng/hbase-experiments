@@ -12,8 +12,8 @@ import static com.mogujie.mst.util.HbaseTestUtil.generateUUID;
 /**
  * Created by fenqi on 16/6/18.
  */
-public class CustomHbaseForRishiTest extends HbaseTestBase {
-    private static final Logger log = LoggerFactory.getLogger(CustomHbaseForRishiTest.class);
+public class CustomFilterForRishiTest extends HbaseTestBase {
+    private static final Logger log = LoggerFactory.getLogger(CustomFilterForRishiTest.class);
     private static char seperator = '-';
 
     @BeforeClass

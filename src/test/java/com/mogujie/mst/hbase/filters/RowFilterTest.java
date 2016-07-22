@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by fenqi on 16/6/18.
  */
-public class RowHbaseTest extends HbaseTestBase {
-    private static final Logger log = LoggerFactory.getLogger(RowHbaseTest.class);
+public class RowFilterTest extends HbaseTestBase {
+    private static final Logger log = LoggerFactory.getLogger(RowFilterTest.class);
 
     @Test
     public void testBinaryComparator() {

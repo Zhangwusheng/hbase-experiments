@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 /**
  * Created by fenqi on 16/7/5.
  */
-public class GetLatestColumnsHbaseTest extends HbaseTestBase {
-    private static final Logger log = LoggerFactory.getLogger(GetLatestColumnsHbaseTest.class);
+public class GetLatestColumnsFilterTest extends HbaseTestBase {
+    private static final Logger log = LoggerFactory.getLogger(GetLatestColumnsFilterTest.class);
     private static final String strRowKey = "r", strQualifier = "q", dependentColumn = "dependentColumn";
     private static final Set<Long> timestampsSet = new HashSet<>();
 

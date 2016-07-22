@@ -19,8 +19,8 @@ import static com.mogujie.mst.util.HbaseTestUtil.getStrOfRepeatedChar;
 /**
  * Created by fenqi on 16/6/18.
  */
-public class MultiRowRangeHbaseTest extends HbaseTestBase {
-    private static final Logger log = LoggerFactory.getLogger(MultiRowRangeHbaseTest.class);
+public class MultiRowRangeFilterTest extends HbaseTestBase {
+    private static final Logger log = LoggerFactory.getLogger(MultiRowRangeFilterTest.class);
     private static char seperator = '-', repeatedTimes = 10;
     private static long wantedId = 1;
 

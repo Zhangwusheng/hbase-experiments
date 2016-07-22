@@ -1,6 +1,7 @@
 package com.mogujie.mst.hbase.mapreduce;
 
 import com.mogujie.mst.hbase.HbaseTestBase;
+import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.mapreduce.RowCounter;
 import org.apache.hadoop.mapreduce.Counters;
 import org.apache.hadoop.mapreduce.Job;
@@ -61,4 +62,15 @@ public class RowCounterTest extends HbaseTestBase {
             Assert.fail(e.toString());
         }
     }
+
+//    @Test
+//    public void example() throws IOException, ClassNotFoundException, InterruptedException {
+//        Job job = RowCounter.createSubmittableJob(HBaseConfiguration.create(), new String[]{"table"});
+//        job.waitForCompletion(true);
+//        Counters counters = job.getCounters();
+//        GenericCounter genericCounter = (GenericCounter) counters.findCounter(
+//                "org.apache.hadoop.hbase.mapreduce.RowCounter$RowCounterMapper$Counters",
+//                "ROWS");
+//        genericCounter.getValue();
+//    }
 }

@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by fenqi on 16/6/18.
  */
-public class ColumnPrefixHbaseTest extends HbaseTestBase {
-    private static final Logger log = LoggerFactory.getLogger(ColumnPrefixHbaseTest.class);
+public class ColumnPrefixFilterTest extends HbaseTestBase {
+    private static final Logger log = LoggerFactory.getLogger(ColumnPrefixFilterTest.class);
     private static String[] qualifiers = {"a.b.c", "a.b.d", "a.e"};
 
     @BeforeClass
