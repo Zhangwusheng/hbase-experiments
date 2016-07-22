@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class IncrTest extends HbaseTestBase {
     private static final Logger log = LoggerFactory.getLogger(IncrTest.class);
     private static String rowKey = "rowKey";
-    private static int intMaxVersions = 2, incrValue = 10;
+    private static int intMaxVersions = 2, incrValue = 10, baseTimestamp = 12345678;
 
     @BeforeClass
     public static void beforeClass() {
@@ -37,7 +37,7 @@ public class IncrTest extends HbaseTestBase {
 
         for (int i = 1; i <= intMaxVersions; i++) {
             Put put = new Put(Bytes.toBytes(rowKey));
-            put.addColumn(Bytes.toBytes(columnFamily), Bytes.toBytes(qualifier), Bytes.toBytes((long) i));
+            put.addColumn(Bytes.toBytes(columnFamily), Bytes.toBytes(qualifier), (long) (baseTimestamp + i), Bytes.toBytes((long) i));
             try {
                 table.put(put);
             } catch (IOException e) {

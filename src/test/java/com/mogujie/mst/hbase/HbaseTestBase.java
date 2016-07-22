@@ -53,7 +53,7 @@ public class HbaseTestBase {
         }
 
         operator = new HbaseOperator();
-        operator.init(zookeeperURI);
+        operator.init(zookeeperURI, 50000);
 
         // clean data
         try {

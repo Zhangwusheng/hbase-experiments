@@ -22,6 +22,7 @@ public class ColumnPrefixHbaseTest extends HbaseTestBase {
         log.info("change qualifierGenerator ...");
         qualifierGenerator = (seeds) -> qualifiers;
         dropTable = false;
+        zookeeperURI = "localhost";
         HbaseTestBase.beforeClass();
     }
 
@@ -50,8 +51,6 @@ public class ColumnPrefixHbaseTest extends HbaseTestBase {
         scan.addFamily(columnFamily);
         scan.setStartRow(rowKey);
         scan.setStopRow(rowKey);
-
-//        ResultScanner scanner = table.getScanner(scan);
 
         Assert.assertTrue(true);
     }
