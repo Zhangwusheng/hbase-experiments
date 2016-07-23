@@ -197,6 +197,7 @@ public class HbaseTestBase {
             int rowNum = 0;
             for (Result result = scanner.next(); result != null; rowNum++, result = scanner.next()) {
                 log.info(new String(result.getRow()));
+                log.info("{}", result);
                 if (0 < expectCellNum) {
                     log.info(result.listCells().toString());
                     Assert.assertEquals(expectCellNum, result.listCells().size());
