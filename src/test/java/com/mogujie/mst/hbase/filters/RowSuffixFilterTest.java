@@ -60,11 +60,8 @@ public class RowSuffixFilterTest extends HbaseTestBase {
 
     @Test
     public void testRowSuffixFilter() {
-//        String pattern = "99";
-//        String expr = "^.*" + pattern + "$";
-
         String expr = "^.*99$";
-        int flag = Pattern.CASE_INSENSITIVE | Pattern.DOTALL;;
+        int flag = Pattern.CASE_INSENSITIVE | Pattern.DOTALL;
         RegexStringComparator.EngineType engineType = RegexStringComparator.EngineType.JAVA;
 
         RowFilter rowFilter = new RowFilter(CompareFilter.CompareOp.EQUAL,

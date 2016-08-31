@@ -17,4 +17,28 @@ public final class HbaseTestUtil {
         return new String(chars);
     }
 
+    public static byte[] getOneBitBiggerBytes(byte[] in) {
+        byte[] out = null;
+        boolean king = true;
+
+        for (int i = 0; i < in.length; i++) {
+            if (in[i] != 0xff) {
+                out = in.clone();
+                out[i] += 1;
+                king = false;
+            }
+        }
+
+        /**
+         * all right, welcome the king of this len
+         */
+        if (king) {
+            out = new byte[in.length + 1];
+            System.arraycopy(in, 0, out, 0, in.length);
+            out[out.length] = 0;
+        }
+
+        return out;
+    }
+
 }

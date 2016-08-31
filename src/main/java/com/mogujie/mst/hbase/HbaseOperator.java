@@ -52,7 +52,9 @@ public class HbaseOperator {
 
     protected void initConfing(String zookeeperURI, int timeout) {
         config = HBaseConfiguration.create();
+
         config.set("hbase.zookeeper.quorum", zookeeperURI);
+        config.set("zookeeper.znode.parent", "/hbase");
 
         config.set("ipc.socket.timeout", String.valueOf(timeout));
         config.set("hbase.rpc.timeout", String.valueOf(timeout));

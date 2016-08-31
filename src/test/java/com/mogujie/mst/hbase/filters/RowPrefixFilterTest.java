@@ -101,9 +101,6 @@ public class RowPrefixFilterTest extends HbaseTestBase {
                 CompareFilter.CompareOp.EQUAL,
                 new SubstringComparator("KEY8")
         );
-//        Scan scan = new Scan();
-//        scan.setFilter(singleColumnValueFilter);
-//        ResultScanner resultScanner = table.getScanner(scan);
         scanAndCheck(singleColumnValueFilter, 1);
     }
 }
