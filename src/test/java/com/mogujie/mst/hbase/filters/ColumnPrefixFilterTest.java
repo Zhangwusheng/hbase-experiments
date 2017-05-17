@@ -39,6 +39,12 @@ public class ColumnPrefixFilterTest extends HbaseTestBase {
     }
 
     @Test
+    public void testColumnPrefixFilter2() {
+        ColumnPrefixFilter columnPrefixFilter = new ColumnPrefixFilter(Bytes.toBytes("a.e"));
+        scanAndCheck(columnPrefixFilter, count);
+    }
+
+    @Test
     public void testNativeUsage() {
         byte[] columnFamily = Bytes.toBytes("0"),
                 qualifierPrefix = Bytes.toBytes("a"),
